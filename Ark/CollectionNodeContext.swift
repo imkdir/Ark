@@ -7,13 +7,31 @@
 //
 
 import UIKit
+import AsyncDisplayKit
 
 public struct CollectionNodeContext {
     public let section: CollectionViewModel
     public let containerSize: CGSize
     public let contentInset: UIEdgeInsets
     
-    public var widthThatFit: CGFloat {
+    public var automaticDimension: ASSizeRange {
+        ASSizeRange.automaticSize(width: contentWidth)
+    }
+    
+    public var contentWidth: CGFloat {
         max(0, containerSize.width - contentInset.left - contentInset.right)
+    }
+    
+    public func sizeRange(height: CGFloat) -> ASSizeRange {
+        ASSizeRangeMake(.init(width: contentWidth, height: height))
+    }
+}
+
+public extension ASSizeRange {
+    
+    static func automaticSize(width: CGFloat) -> ASSizeRange {
+        return ASSizeRange(
+            min: .init(width: width, height: .leastNonzeroMagnitude),
+            max: .init(width: width, height: .greatestFiniteMagnitude))
     }
 }

@@ -21,7 +21,7 @@ struct SectionHeader: CollectionViewModel {
     }
     
     func sizeRange(in context: CollectionNodeContext) -> ASSizeRange {
-        return ASSizeRangeMake(.init(width: context.widthThatFit, height: 35))
+        context.sizeRange(height: 35)
     }
     
     final class Node: ASCellNode {

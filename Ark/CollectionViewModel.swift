@@ -31,6 +31,6 @@ public extension CollectionViewModel {
     }
     
     func sizeRange(in context: CollectionNodeContext) -> ASSizeRange {
-        .automaticSize(width: context.widthThatFit)
+        context.automaticDimension
     }
 }

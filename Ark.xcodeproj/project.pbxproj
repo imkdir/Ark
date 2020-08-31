@@ -14,8 +14,6 @@
 		A655BE0F24F73CC400DB6F02 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE0E24F73CC400DB6F02 /* Banner.swift */; };
 		A655BE1124F73D2800DB6F02 /* ArticleFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */; };
 		A655BE1324F73D5C00DB6F02 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */; };
-		A6E81FA124F79E7000AAE8B0 /* ASSizeRangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA024F79E7000AAE8B0 /* ASSizeRangeExtension.swift */; };
-		A6E81FA324F7A8C600AAE8B0 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */; };
 		A6E81FA624F7E99E00AAE8B0 /* CollectionNodeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA524F7E99E00AAE8B0 /* CollectionNodeContext.swift */; };
 		B4256DC724ED1715000DF13C /* Ark.h in Headers */ = {isa = PBXBuildFile; fileRef = B4256DC524ED1715000DF13C /* Ark.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B42875AB24EE10ED00933413 /* ListDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42875AA24EE10ED00933413 /* ListDiff.swift */; };
@@ -28,6 +26,7 @@
 		B42875C624EE2CBB00933413 /* DiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42875C524EE2CBB00933413 /* DiffableDataSource.swift */; };
 		B42875CA24EE7A7700933413 /* Ark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4256DC224ED1715000DF13C /* Ark.framework */; };
 		B42875CB24EE7A7700933413 /* Ark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B4256DC224ED1715000DF13C /* Ark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B4E5581B24FCA9DA004C2477 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +74,6 @@
 		A655BE0E24F73CC400DB6F02 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFeed.swift; sourceTree = "<group>"; };
 		A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
-		A6E81FA024F79E7000AAE8B0 /* ASSizeRangeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASSizeRangeExtension.swift; sourceTree = "<group>"; };
 		A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		A6E81FA524F7E99E00AAE8B0 /* CollectionNodeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionNodeContext.swift; sourceTree = "<group>"; };
 		B4256DC224ED1715000DF13C /* Ark.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ark.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,8 +157,6 @@
 				B42875C524EE2CBB00933413 /* DiffableDataSource.swift */,
 				A64FD07724F681CF00EB0D38 /* CollectionViewModel.swift */,
 				A6E81FA524F7E99E00AAE8B0 /* CollectionNodeContext.swift */,
-				A6E81FA024F79E7000AAE8B0 /* ASSizeRangeExtension.swift */,
-				A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */,
 				B4256DC624ED1715000DF13C /* Info.plist */,
 			);
 			path = Ark;
@@ -176,6 +172,7 @@
 				A655BE0E24F73CC400DB6F02 /* Banner.swift */,
 				A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */,
 				A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */,
+				A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */,
 				B42875B824EE137D00933413 /* Main.storyboard */,
 				B42875BB24EE138100933413 /* Assets.xcassets */,
 				B42875BD24EE138100933413 /* LaunchScreen.storyboard */,
@@ -397,8 +394,6 @@
 				B42875AB24EE10ED00933413 /* ListDiff.swift in Sources */,
 				A6E81FA624F7E99E00AAE8B0 /* CollectionNodeContext.swift in Sources */,
 				B42875C624EE2CBB00933413 /* DiffableDataSource.swift in Sources */,
-				A6E81FA124F79E7000AAE8B0 /* ASSizeRangeExtension.swift in Sources */,
-				A6E81FA324F7A8C600AAE8B0 /* DateFormat.swift in Sources */,
 				A64FD07824F681D000EB0D38 /* CollectionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +404,7 @@
 			files = (
 				A655BE0F24F73CC400DB6F02 /* Banner.swift in Sources */,
 				B42875B724EE137D00933413 /* ViewController.swift in Sources */,
+				B4E5581B24FCA9DA004C2477 /* DateFormat.swift in Sources */,
 				A655BE1124F73D2800DB6F02 /* ArticleFeed.swift in Sources */,
 				A655BE1324F73D5C00DB6F02 /* SectionHeader.swift in Sources */,
 				B42875B324EE137D00933413 /* AppDelegate.swift in Sources */,
