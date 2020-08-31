@@ -1,0 +1,50 @@
+//
+//  SectionHeader.swift
+//  ArkDemo
+//
+//  Created by Dwight CHENG on 8/27/20.
+//  Copyright © 2020 Glow. All rights reserved.
+//
+
+import UIKit
+import Ark
+import AsyncDisplayKit
+
+
+struct SectionHeader: CollectionViewModel {
+    let date: Date
+    
+    var diffIdentifier: AnyHashable { date }
+    
+    var viewBlock: ASCellNodeBlock {
+        return { Node(title: string(format: "MMM dd", self.date)) }
+    }
+    
+    func sizeRange(in context: CollectionNodeContext) -> ASSizeRange {
+        return ASSizeRangeMake(.init(width: context.widthThatFit, height: 35))
+    }
+    
+    final class Node: ASCellNode {
+        var titleNode: ASTextNode
+        
+        init(title: String) {
+            self.titleNode = ASTextNode()
+            super.init()
+            automaticallyManagesSubnodes = true
+            
+            titleNode.attributedText = NSAttributedString(
+                string: title,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 18, weight: .bold),
+                    .foregroundColor: UIColor.label])
+        }
+        
+        override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+            ASInsetLayoutSpec(
+                insets: .init(top: 4, left: 15, bottom: 4, right: 15),
+                child: titleNode)
+        }
+    }
+}
+
+extension SectionHeader: Equatable {}
