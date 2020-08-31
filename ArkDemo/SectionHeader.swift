@@ -11,7 +11,7 @@ import Ark
 import AsyncDisplayKit
 
 
-struct SectionHeader: CollectionViewModel {
+struct SectionHeader: CollectionNodeModel {
     let date: Date
     
     var diffIdentifier: AnyHashable { date }

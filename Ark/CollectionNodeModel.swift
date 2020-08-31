@@ -1,5 +1,5 @@
 //
-//  CollectionViewModel.swift
+//  CollectionNodeModel.swift
 //  Ark
 //
 //  Created by Dwight CHENG on 8/26/20.
@@ -9,9 +9,9 @@
 import Foundation
 import AsyncDisplayKit
 
-public protocol CollectionViewModel: Diffable {
+public protocol CollectionNodeModel: Diffable {
     
-    var items: [CollectionViewModel] { get }
+    var items: [CollectionNodeModel] { get }
     
     var viewBlock: ASCellNodeBlock { get }
     
@@ -20,9 +20,9 @@ public protocol CollectionViewModel: Diffable {
 
 // MARK: -  Default Implementation for Single Item Section
 
-public extension CollectionViewModel {
+public extension CollectionNodeModel {
     
-    var items: [CollectionViewModel] {
+    var items: [CollectionNodeModel] {
         [self]
     }
     

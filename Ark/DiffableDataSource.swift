@@ -10,14 +10,14 @@ import Foundation
 import AsyncDisplayKit
 
 
-public struct DiffableDataSourceSnapshot<T: CollectionViewModel> {
+public struct DiffableDataSourceSnapshot<T: CollectionNodeModel> {
     public private(set) var sections: [T]
     
     public init(sections: [T]) {
         self.sections = sections
     }
     
-    public func item(for indexPath: IndexPath) -> CollectionViewModel {
+    public func item(for indexPath: IndexPath) -> CollectionNodeModel {
         sections[indexPath.section].items[indexPath.item]
     }
     
@@ -26,7 +26,7 @@ public struct DiffableDataSourceSnapshot<T: CollectionViewModel> {
     }
 }
 
-public class DiffableDataSource<Model: CollectionViewModel & Equatable>: NSObject,
+public class DiffableDataSource<Model: CollectionNodeModel & Equatable>: NSObject,
     ASCollectionDelegate & ASCollectionDataSource {
     public typealias Snapshot = DiffableDataSourceSnapshot<Model>
     

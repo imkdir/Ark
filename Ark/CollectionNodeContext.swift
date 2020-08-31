@@ -10,7 +10,7 @@ import UIKit
 import AsyncDisplayKit
 
 public struct CollectionNodeContext {
-    public let section: CollectionViewModel
+    public let section: CollectionNodeModel
     public let containerSize: CGSize
     public let contentInset: UIEdgeInsets
     

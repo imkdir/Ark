@@ -10,7 +10,7 @@ import UIKit
 import Ark
 import AsyncDisplayKit
 
-struct Banner: CollectionViewModel {
+struct Banner: CollectionNodeModel {
     let id: UUID
     let image: UIImage
     

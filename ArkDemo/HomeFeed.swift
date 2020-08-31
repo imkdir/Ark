@@ -15,8 +15,8 @@ enum HomeFeed {
     case articleFeed(ArticleFeed)
 }
 
-extension HomeFeed: CollectionViewModel {
-    private var content: CollectionViewModel {
+extension HomeFeed: CollectionNodeModel {
+    private var content: CollectionNodeModel {
         switch self {
         case .banner(let banner):
             return banner
@@ -29,7 +29,7 @@ extension HomeFeed: CollectionViewModel {
         content.diffIdentifier
     }
     
-    var items: [CollectionViewModel] {
+    var items: [CollectionNodeModel] {
         content.items
     }
 }

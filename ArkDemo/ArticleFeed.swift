@@ -10,21 +10,21 @@ import UIKit
 import Ark
 import AsyncDisplayKit
 
-struct ArticleFeed: CollectionViewModel {
+struct ArticleFeed: CollectionNodeModel {
     let date: Date
     let subjects: [Subject]
     
     var diffIdentifier: AnyHashable { date }
     
-    var items: [CollectionViewModel] {
+    var items: [CollectionNodeModel] {
         [SectionHeader(date: date)] + subjects
     }
     
-    enum Subject: CollectionViewModel {
+    enum Subject: CollectionNodeModel {
         case article(Article)
         case poll(Poll)
         
-        var content: CollectionViewModel {
+        var content: CollectionNodeModel {
             switch self {
             case .article(let article):
                 return article
@@ -47,7 +47,7 @@ struct ArticleFeed: CollectionViewModel {
     }
     
     // MARK: - Article
-    struct Article: CollectionViewModel {
+    struct Article: CollectionNodeModel {
         let id: UUID
         let title: String
         let preview: String
@@ -96,7 +96,7 @@ struct ArticleFeed: CollectionViewModel {
         }
     }
     
-    struct Poll: CollectionViewModel {
+    struct Poll: CollectionNodeModel {
         let id: UUID
         let title: String
         let options: [String:Int]
