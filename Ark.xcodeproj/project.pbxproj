@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		35B204DE2BBBE9F4FD20E04E /* Pods_ArkDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C766C3C5A77FD675545DA9 /* Pods_ArkDemo.framework */; };
 		6DFA35176F2E68C10B888F2D /* Pods_Ark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A4B4EE553955500C312EBAA /* Pods_Ark.framework */; };
-		A64FD07824F681D000EB0D38 /* NodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64FD07724F681CF00EB0D38 /* NodeModel.swift */; };
+		A64FD07824F681D000EB0D38 /* Nodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64FD07724F681CF00EB0D38 /* Nodable.swift */; };
 		A64FD07A24F688D000EB0D38 /* HomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64FD07924F688D000EB0D38 /* HomeFeed.swift */; };
 		A655BE0F24F73CC400DB6F02 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE0E24F73CC400DB6F02 /* Banner.swift */; };
 		A655BE1124F73D2800DB6F02 /* ArticleFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */; };
@@ -26,6 +26,7 @@
 		B42875C624EE2CBB00933413 /* DiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42875C524EE2CBB00933413 /* DiffableDataSource.swift */; };
 		B42875CA24EE7A7700933413 /* Ark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4256DC224ED1715000DF13C /* Ark.framework */; };
 		B42875CB24EE7A7700933413 /* Ark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B4256DC224ED1715000DF13C /* Ark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B44FACDA24FE2B4D0027D5A5 /* AnyNodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */; };
 		B4E5581B24FCA9DA004C2477 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */; };
 		B4E5581E24FCC530004C2477 /* NodeChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5581D24FCC530004C2477 /* NodeChannel.swift */; };
 /* End PBXBuildFile section */
@@ -70,7 +71,7 @@
 		73A9113722B6957CF7BB8838 /* Pods-GLFeedKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLFeedKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-GLFeedKitDemo/Pods-GLFeedKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		9500F7B816029FB5A309BFA3 /* Pods-ArkDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArkDemo.release.xcconfig"; path = "Target Support Files/Pods-ArkDemo/Pods-ArkDemo.release.xcconfig"; sourceTree = "<group>"; };
 		A52E228118AFF2DB46C48C21 /* Pods-GLFeedKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLFeedKit.debug.xcconfig"; path = "Target Support Files/Pods-GLFeedKit/Pods-GLFeedKit.debug.xcconfig"; sourceTree = "<group>"; };
-		A64FD07724F681CF00EB0D38 /* NodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeModel.swift; sourceTree = "<group>"; };
+		A64FD07724F681CF00EB0D38 /* Nodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nodable.swift; sourceTree = "<group>"; };
 		A64FD07924F688D000EB0D38 /* HomeFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeed.swift; sourceTree = "<group>"; };
 		A655BE0E24F73CC400DB6F02 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFeed.swift; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		B42875BE24EE138100933413 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B42875C024EE138100933413 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B42875C524EE2CBB00933413 /* DiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableDataSource.swift; sourceTree = "<group>"; };
+		B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNodable.swift; sourceTree = "<group>"; };
 		B4E5581D24FCC530004C2477 /* NodeChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeChannel.swift; sourceTree = "<group>"; };
 		F0C766C3C5A77FD675545DA9 /* Pods_ArkDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArkDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F61531B872BE69FE4C5901BD /* Pods-Ark.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ark.release.xcconfig"; path = "Target Support Files/Pods-Ark/Pods-Ark.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,7 +159,8 @@
 				B4256DC524ED1715000DF13C /* Ark.h */,
 				B42875AA24EE10ED00933413 /* ListDiff.swift */,
 				B42875C524EE2CBB00933413 /* DiffableDataSource.swift */,
-				A64FD07724F681CF00EB0D38 /* NodeModel.swift */,
+				A64FD07724F681CF00EB0D38 /* Nodable.swift */,
+				B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */,
 				A6E81FA524F7E99E00AAE8B0 /* NodeContext.swift */,
 				B4E5581D24FCC530004C2477 /* NodeChannel.swift */,
 				B4256DC624ED1715000DF13C /* Info.plist */,
@@ -398,7 +401,8 @@
 				B42875AB24EE10ED00933413 /* ListDiff.swift in Sources */,
 				A6E81FA624F7E99E00AAE8B0 /* NodeContext.swift in Sources */,
 				B42875C624EE2CBB00933413 /* DiffableDataSource.swift in Sources */,
-				A64FD07824F681D000EB0D38 /* NodeModel.swift in Sources */,
+				B44FACDA24FE2B4D0027D5A5 /* AnyNodable.swift in Sources */,
+				A64FD07824F681D000EB0D38 /* Nodable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

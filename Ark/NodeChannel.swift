@@ -13,7 +13,7 @@ import RxCocoa
 public typealias NodeChannel = PublishSubject<NodeEvent>
 
 public struct NodeEvent {
-    public let model: NodeModel
+    public let model: AnyNodable
     public let kind: Kind
     public let indexPath: IndexPath
     public let userInfo: [String: Any]
@@ -21,21 +21,16 @@ public struct NodeEvent {
     public enum Kind {
         case selection, refresh, action, dismiss
     }
-    
-    public func on<T: NodeModel>(completion: (GenericNodeEvent<T>) -> Void) -> NodeEvent {
-        GenericNodeEvent<T>(self).map(completion)
-        return self
-    }
 }
 
-public struct GenericNodeEvent<T: NodeModel> {
+public struct GenericNodeEvent<T: Nodable> {
     public let model: T
     public let kind: NodeEvent.Kind
     public let indexPath: IndexPath
     public let userInfo: [String: Any]
     
     public init?(_ nodeEvent: NodeEvent) {
-        guard let model = nodeEvent.model as? T else {
+        guard let model = nodeEvent.model.base as? T else {
             return nil
         }
         self.model = model

@@ -12,30 +12,15 @@ import RxSwift
 import RxCocoa
 import AsyncDisplayKit
 
-final class Banner: NodeModel {
+struct Banner: Nodable {
 
-    let id: UUID
     let image: UIImage
     
-    init(image: UIImage) {
-        self.id = UUID()
-        self.image = image
-        super.init()
+    var diffIdentifier: AnyHashable {
+        image.hashValue
     }
     
-    override var diffIdentifier: AnyHashable {
-        id.uuidString
-    }
-    
-    override func isEqual(_ object: Any?) -> Bool {
-        guard let object = object as? Banner else {
-            return false
-        }
-        return id == object.id
-            && image == object.image
-    }
-    
-    override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         return { Node(image: self.image) }
     }
     

@@ -13,21 +13,16 @@ import RxCocoa
 import AsyncDisplayKit
 
 
-final class SectionHeader: NodeModel {
+struct SectionHeader: Nodable {
     let date: Date
     
-    init(date: Date) {
-        self.date = date
-        super.init()
-    }
+    var diffIdentifier: AnyHashable { date }
     
-    override var diffIdentifier: AnyHashable { date }
-    
-    override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         return { Node(title: string(format: "MMM dd", self.date)) }
     }
     
-    override func sizeRange(in context: NodeContext) -> ASSizeRange {
+    func sizeRange(in context: NodeContext) -> ASSizeRange {
         context.sizeRange(height: 35)
     }
     

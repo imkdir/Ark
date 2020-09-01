@@ -11,6 +11,7 @@ import Ark
 import AsyncDisplayKit
 
 enum HomeFeed: SectionInflator {
+    
     case banner(Banner)
     case articleFeed(ArticleFeed)
 
@@ -23,13 +24,13 @@ enum HomeFeed: SectionInflator {
         }
     }
     
-    var items: [NodeModel] {
+    var items: [AnyNodable] {
         switch self {
         case .banner(let banner):
-            return [banner]
+            return [AnyNodable(banner)]
         case .articleFeed(let feed):
-            var result: [NodeModel] = feed.subjects
-            result.insert(SectionHeader(date: feed.date), at: 0)
+            var result: [AnyNodable] = feed.subjects.map(AnyNodable.init)
+            result.insert(AnyNodable(SectionHeader(date: feed.date)), at: 0)
             return result
         }
     }

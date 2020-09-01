@@ -19,7 +19,7 @@ public struct DiffableDataSourceSnapshot<T: SectionInflator> {
         self.sections = sections
     }
     
-    public func item(for indexPath: IndexPath) -> NodeModel {
+    public func item(for indexPath: IndexPath) -> AnyNodable {
         sections[indexPath.section].items[indexPath.item]
     }
     
@@ -50,7 +50,7 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
             return
         }
         self.snapshot = snapshot
-        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
+        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections).forBatchUpdates()
         
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
 
@@ -99,10 +99,11 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
 
 extension Reactive {
     
-    public func nodeEventChannel<Model: SectionInflator, T: NodeModel>() -> Observable<GenericNodeEvent<T>>
+    public func nodeEventChannel<Model: SectionInflator, T: Nodable>() -> Observable<GenericNodeEvent<T>>
         where Base: DiffableDataSource<Model> {
         base.rx_channel
             .asObserver()
+            .debug("NodeEvent")
             .compactMap(GenericNodeEvent<T>.init)
             .observeOn(MainScheduler.instance)
     }

@@ -17,27 +17,12 @@ struct ArticleFeed {
     let date: Date
     let subjects: [Subject]
     
-    final class Subject: NodeModel {
+    enum Subject: Nodable {
+        case article(Article)
+        case poll(Poll)
         
-        enum _Subject: Equatable {
-            case article(Article)
-            case poll(Poll)
-        }
-        
-        private var _subject: _Subject
-        
-        init(article: Article) {
-            self._subject = .article(article)
-            super.init()
-        }
-        
-        init(poll: Poll) {
-            self._subject = .poll(poll)
-            super.init()
-        }
-        
-        override var diffIdentifier: AnyHashable {
-            switch _subject {
+        var diffIdentifier: AnyHashable {
+            switch self {
             case .article(let article):
                 return article.diffIdentifier
             case .poll(let poll):
@@ -45,52 +30,25 @@ struct ArticleFeed {
             }
         }
         
-        override func isEqual(_ object: Any?) -> Bool {
-            guard let object = object as? Subject else {
-                return false
-            }
-            return self._subject == object._subject
-        }
-        
-        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-            switch _subject {
+        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+            switch self {
             case .article(let article):
                 return article.nodeBlock(with: channel, indexPath: indexPath)
             case .poll(let poll):
                 return poll.nodeBlock(with: channel, indexPath: indexPath)
             }
         }
-        
-        override func sizeRange(in context: NodeContext) -> ASSizeRange {
-            context.automaticDimension
-        }
     }
     
     // MARK: - Article
-    final class Article: NodeModel {
-        let id: UUID
+    struct Article: Nodable {
         let title: String
         let preview: String
+        var read: Bool
         
-        init(title: String, preview: String) {
-            self.id = UUID()
-            self.title = title
-            self.preview = preview
-            super.init()
-        }
+        var diffIdentifier: AnyHashable { title }
         
-        override var diffIdentifier: AnyHashable { id }
-        
-        override func isEqual(_ object: Any?) -> Bool {
-            guard let object = object as? Article else {
-                return false
-            }
-            return id == object.id
-                && title == object.title
-                && preview == object.preview
-        }
-        
-        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(article: self) }
         }
         
@@ -105,6 +63,8 @@ struct ArticleFeed {
                 
                 automaticallyManagesSubnodes = true
                 backgroundColor = .systemBackground
+                
+                alpha = article.read ? 0.6 : 1.0
                 
                 titleNode.attributedText = NSAttributedString(
                     string: article.title,
@@ -132,37 +92,18 @@ struct ArticleFeed {
         }
     }
     
-    final class Poll: NodeModel {
-        let id: UUID
+    struct Poll: Nodable {
         let title: String
         let options: [String:Int]
         let isVoted: Bool
-        
-        init(title: String, options: [String:Int], isVoted: Bool) {
-            self.id = UUID()
-            self.title = title
-            self.options = options
-            self.isVoted = isVoted
-            super.init()
-        }
         
         var totalCount: Int {
             options.reduce(0, { $0 + $1.value })
         }
         
-        override var diffIdentifier: AnyHashable { id.uuidString }
+        var diffIdentifier: AnyHashable { title }
         
-        override func isEqual(_ object: Any?) -> Bool {
-            guard let object = object as? Poll else {
-                return false
-            }
-            return id == object.id
-                && title == object.title
-                && options == object.options
-                && isVoted == object.isVoted
-        }
-        
-        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(poll: self) }
         }
         

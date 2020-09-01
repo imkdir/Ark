@@ -33,15 +33,19 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+        fetchFeeds()
+        updateUI()
+        observeEvents()
+    }
+    
+    private func setupViews() {
         node.backgroundColor = .systemGroupedBackground
         node.alwaysBounceVertical = true
         node.contentInset = UIEdgeInsets(top: 48, left: 10, bottom: 0, right: 10)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
-        
-        fetchFeeds()
-        updateUI()
-        observeEvents()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
     }
     
     @objc func refresh() {
@@ -52,18 +56,12 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
         self.sections.insert(.banner(banner), at: 0)
     }
     
-    private func dismissBanner() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.sections.remove(at: 0)
-        })
-    }
-    
     private func fetchFeeds() {
         sections = [
             .articleFeed(.init(date: Date(), subjects: [
-                .init(article: .init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...")),
-                .init(article: .init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.")),
-                .init(poll: .init(title: "Who is the best programmer in the world?", options: ["Rob Pike": 2, "Dennis Ritchie": 3, "Kent Beck": 4], isVoted: false))
+                .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
+                .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
+                .poll(.init(title: "Who is the best programmer in the world?", options: ["Rob Pike": 2, "Dennis Ritchie": 3, "Kent Beck": 4], isVoted: false))
             ]))
         ]
     }
@@ -87,11 +85,37 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     }
     
     private func handleArticleEvent(_ event: GenericNodeEvent<ArticleFeed.Subject>) {
-        
+        func findSectionAndIndex(of subject: ArticleFeed.Subject) -> (ArticleFeed, IndexPath)? {
+            for (section, model) in self.sections.enumerated() {
+                guard case .articleFeed(let feed) = model,
+                    let index = feed.subjects.firstIndex(of: subject) else {
+                    continue
+                }
+                return (feed, IndexPath(item: index, section: section))
+            }
+            return nil
+        }
+        if let (feed, indexPath) = findSectionAndIndex(of: event.model) {
+            switch event.model {
+            case .article(var article):
+                article.read.toggle()
+                var subjects = feed.subjects
+                subjects[indexPath.item] = .article(article)
+                let newFeed = HomeFeed.articleFeed(.init(date: feed.date, subjects: subjects))
+                sections[indexPath.section] = newFeed
+            case .poll(let poll):
+                break
+            }
+        }
     }
     
     private func handleBannerEvent(_ event: GenericNodeEvent<Banner>) {
-        
+        sections.removeAll(where: { section in
+            guard case .banner(let banner) = section else {
+                return false
+            }
+            return banner == event.model
+        })
     }
     
     private let disposeBag = DisposeBag()
