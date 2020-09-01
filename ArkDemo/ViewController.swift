@@ -73,13 +73,13 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     private func observeEvents() {
         dataSource
             .rx.nodeEventChannel()
-            .debug("ArticleFeed")
+//            .debug("ArticleFeed")
             .subscribe(onNext: handleArticleEvent)
             .disposed(by: disposeBag)
         
         dataSource
             .rx.nodeEventChannel()
-            .debug("Banner")
+//            .debug("Banner")
             .subscribe(onNext: handleBannerEvent)
             .disposed(by: disposeBag)
     }

@@ -28,8 +28,21 @@ public struct DiffableDataSourceSnapshot<T: SectionInflator> {
     }
 }
 
+/// a `NodeEventChannel` is passed in each `Nodable`'s
+/// `nodeBlock(channel:indexPath:)`, where struct implemented `Nodable`
+/// can reference the channel and pass in events from created texture node.
 public typealias NodeEventChannel = PublishSubject<NodeEvent>
 
+
+/// A `DiffableDataSoure<Target>` requires a `Target` implements `SectionInflator`,
+/// and reference a collectionNode, set itself as collectionNode's data source and delegate,
+/// whenever a new snapshot is applied, it calls `performBatchUpdates` on the collectionNode
+/// by diffing old and new snapshot's sections.
+///
+/// It also manage events from all nodes, whoever interests in the events can subscribe
+/// to `rx.nodeEventChannel` and pass in a callback `(GenericNodeEvent<T:Nodable>) -> Void`,
+/// substitude `T` for any type that implements `Nodable`, and subscriber will receive any
+/// events comming from that source.
 public class DiffableDataSource<Target: SectionInflator>: NSObject,
     ASCollectionDelegate & ASCollectionDataSource {
     public typealias Snapshot = DiffableDataSourceSnapshot<Target>
@@ -39,12 +52,16 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
     public private(set) weak var collectionNode: ASCollectionNode!
     fileprivate let rx_channel = NodeEventChannel()
     
+    // MARK: - Designated Initializer
+    
     public init(collectionNode: ASCollectionNode) {
         self.collectionNode = collectionNode
         super.init()
         self.collectionNode.dataSource = self
         self.collectionNode.delegate = self
     }
+    
+    // MARK: - Interfaces
     
     public func apply(_ snapshot: Snapshot, animatingDifferences: Bool, completion: (() -> Void)?) {
         guard let oldSnapshot = self.snapshot else {
@@ -53,7 +70,7 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
         }
         self.snapshot = snapshot
         let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections).forBatchUpdates()
-        
+        print(result)
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
 
             for move in result.moves {
@@ -99,13 +116,14 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
     }
 }
 
+// MARK: - Rx Extension
+
 extension Reactive {
     
     public func nodeEventChannel<Model: SectionInflator, T: Nodable>() -> Observable<GenericNodeEvent<T>>
         where Base: DiffableDataSource<Model> {
         base.rx_channel
             .asObserver()
-            .debug("NodeEvent")
             .compactMap(GenericNodeEvent<T>.init)
             .observeOn(MainScheduler.instance)
     }

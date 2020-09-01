@@ -18,6 +18,9 @@ public protocol SectionInflator: Nodable {
     var items: [AnyNodable] { get }
 }
 
+/// A struct implements `Nodable` provides
+/// info to construct a texture node and
+/// act as section or item level element for diff processing.
 public protocol Nodable: Diffable, Equatable {
 
     var diffIdentifier: AnyHashable { get }
@@ -29,12 +32,14 @@ public protocol Nodable: Diffable, Equatable {
 
 public extension Nodable {
     func sizeRange(in context: NodeContext) -> ASSizeRange {
+        // default implemention for sizeRange that can handle most of the cases.
         context.automaticDimension
     }
 }
 
 public extension SectionInflator {
     func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        // This is a compromise to avoid creating too much protocols
         fatalError("This methods should never be called on SectionInflator.")
     }
 }
