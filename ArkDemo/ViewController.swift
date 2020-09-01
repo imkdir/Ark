@@ -85,27 +85,19 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     }
     
     private func handleArticleEvent(_ event: GenericNodeEvent<ArticleFeed.Subject>) {
-        func findSectionAndIndex(of subject: ArticleFeed.Subject) -> (ArticleFeed, IndexPath)? {
-            for (section, model) in self.sections.enumerated() {
-                guard case .articleFeed(let feed) = model,
-                    let index = feed.subjects.firstIndex(of: subject) else {
-                    continue
-                }
-                return (feed, IndexPath(item: index, section: section))
-            }
-            return nil
+        guard case .articleFeed(let feed) = sections[event.indexPath.section],
+            let index = feed.subjects.firstIndex(of: event.model) else {
+            return
         }
-        if let (feed, indexPath) = findSectionAndIndex(of: event.model) {
-            switch event.model {
-            case .article(var article):
-                article.read.toggle()
-                var subjects = feed.subjects
-                subjects[indexPath.item] = .article(article)
-                let newFeed = HomeFeed.articleFeed(.init(date: feed.date, subjects: subjects))
-                sections[indexPath.section] = newFeed
-            case .poll(let poll):
-                break
-            }
+        switch event.model {
+        case .article(var article):
+            var subjects = feed.subjects
+            article.read.toggle()
+            subjects[index] = .article(article)
+            let newFeed = HomeFeed.articleFeed(.init(date: feed.date, subjects: subjects))
+            sections[event.indexPath.section] = newFeed
+        case .poll(let poll):
+            break
         }
     }
     

@@ -69,9 +69,31 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
             return
         }
         self.snapshot = snapshot
-        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections).forBatchUpdates()
+        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
         print(result)
+        
+        func createBactchUpdates(from updates: IndexSet) -> BatchUpdates {
+            var result = BatchUpdates()
+            for section in updates {
+                let oldItems = oldSnapshot.sections[section].items
+                let newItems = snapshot.sections[section].items
+                let diffResult = List.diffing(oldArray: oldItems, newArray: newItems).forBatchUpdates()
+                result.itemDeletes += diffResult.deletes.toIndexPaths(section: section)
+                result.itemInserts += diffResult.inserts.toIndexPaths(section: section)
+                result.itemMoves += diffResult.moves.toIndexPaths(section: section)
+            }
+            return result
+        }
+        let batchUpdates = createBactchUpdates(from: result.updates)
+        
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
+            
+            node?.deleteItems(at: batchUpdates.itemDeletes)
+            node?.insertItems(at: batchUpdates.itemInserts)
+            
+            for move in batchUpdates.itemMoves {
+                node?.moveItem(at: move.from, to: move.to)
+            }
 
             for move in result.moves {
                 node?.moveSection(move.from, toSection: move.to)
