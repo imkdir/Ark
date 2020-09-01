@@ -14,7 +14,7 @@ import AsyncDisplayKit
 
 /// A SectionInfaltor provides items for a section
 /// and act as section level element for diff processing.
-public protocol SectionInflator: Nodable {
+public protocol SectionInflator: Diffable, Equatable {
     var items: [AnyNodable] { get }
 }
 
@@ -32,14 +32,7 @@ public protocol Nodable: Diffable, Equatable {
 
 public extension Nodable {
     func sizeRange(in context: NodeContext) -> ASSizeRange {
-        // default implemention for sizeRange that can handle most of the cases.
+        // default implementation that can handle most cases.
         context.automaticDimension
-    }
-}
-
-public extension SectionInflator {
-    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-        // This is a compromise to avoid creating too much protocols
-        fatalError("This methods should never be called on SectionInflator.")
     }
 }
