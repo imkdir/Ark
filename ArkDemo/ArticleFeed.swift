@@ -8,53 +8,89 @@
 
 import UIKit
 import Ark
+import RxSwift
+import RxCocoa
 import AsyncDisplayKit
 
-struct ArticleFeed: CollectionNodeModel {
+struct ArticleFeed {
+
     let date: Date
     let subjects: [Subject]
     
-    var diffIdentifier: AnyHashable { date }
-    
-    var items: [CollectionNodeModel] {
-        [SectionHeader(date: date)] + subjects
-    }
-    
-    enum Subject: CollectionNodeModel {
-        case article(Article)
-        case poll(Poll)
+    final class Subject: NodeModel {
         
-        var content: CollectionNodeModel {
-            switch self {
+        enum _Subject: Equatable {
+            case article(Article)
+            case poll(Poll)
+        }
+        
+        private var _subject: _Subject
+        
+        init(article: Article) {
+            self._subject = .article(article)
+            super.init()
+        }
+        
+        init(poll: Poll) {
+            self._subject = .poll(poll)
+            super.init()
+        }
+        
+        override var diffIdentifier: AnyHashable {
+            switch _subject {
             case .article(let article):
-                return article
+                return article.diffIdentifier
             case .poll(let poll):
-                return poll
+                return poll.diffIdentifier
             }
         }
         
-        var diffIdentifier: AnyHashable {
-            content.diffIdentifier
+        override func isEqual(_ object: Any?) -> Bool {
+            guard let object = object as? Subject else {
+                return false
+            }
+            return self._subject == object._subject
         }
         
-        var viewBlock: ASCellNodeBlock {
-            content.viewBlock
+        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+            switch _subject {
+            case .article(let article):
+                return article.nodeBlock(with: channel, indexPath: indexPath)
+            case .poll(let poll):
+                return poll.nodeBlock(with: channel, indexPath: indexPath)
+            }
         }
         
-        func sizeRange(in context: CollectionNodeContext) -> ASSizeRange {
-            content.sizeRange(in: context)
+        override func sizeRange(in context: NodeContext) -> ASSizeRange {
+            context.automaticDimension
         }
     }
     
     // MARK: - Article
-    struct Article: CollectionNodeModel {
+    final class Article: NodeModel {
         let id: UUID
         let title: String
         let preview: String
         
-        var diffIdentifier: AnyHashable { id }
+        init(title: String, preview: String) {
+            self.id = UUID()
+            self.title = title
+            self.preview = preview
+            super.init()
+        }
         
-        var viewBlock: ASCellNodeBlock {
+        override var diffIdentifier: AnyHashable { id }
+        
+        override func isEqual(_ object: Any?) -> Bool {
+            guard let object = object as? Article else {
+                return false
+            }
+            return id == object.id
+                && title == object.title
+                && preview == object.preview
+        }
+        
+        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(article: self) }
         }
         
@@ -96,19 +132,37 @@ struct ArticleFeed: CollectionNodeModel {
         }
     }
     
-    struct Poll: CollectionNodeModel {
+    final class Poll: NodeModel {
         let id: UUID
         let title: String
         let options: [String:Int]
         let isVoted: Bool
         
+        init(title: String, options: [String:Int], isVoted: Bool) {
+            self.id = UUID()
+            self.title = title
+            self.options = options
+            self.isVoted = isVoted
+            super.init()
+        }
+        
         var totalCount: Int {
             options.reduce(0, { $0 + $1.value })
         }
         
-        var diffIdentifier: AnyHashable { id.uuidString }
+        override var diffIdentifier: AnyHashable { id.uuidString }
         
-        var viewBlock: ASCellNodeBlock {
+        override func isEqual(_ object: Any?) -> Bool {
+            guard let object = object as? Poll else {
+                return false
+            }
+            return id == object.id
+                && title == object.title
+                && options == object.options
+                && isVoted == object.isVoted
+        }
+        
+        override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(poll: self) }
         }
         
@@ -198,9 +252,3 @@ extension ArticleFeed: Equatable {
         lhs.subjects == rhs.subjects
     }
 }
-
-extension ArticleFeed.Subject: Equatable {}
-
-extension ArticleFeed.Article: Equatable {}
-
-extension ArticleFeed.Poll: Equatable {}

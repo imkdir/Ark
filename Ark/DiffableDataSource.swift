@@ -7,17 +7,19 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 import AsyncDisplayKit
 
 
-public struct DiffableDataSourceSnapshot<T: CollectionNodeModel> {
+public struct DiffableDataSourceSnapshot<T: SectionInflator> {
     public private(set) var sections: [T]
     
     public init(sections: [T]) {
         self.sections = sections
     }
     
-    public func item(for indexPath: IndexPath) -> CollectionNodeModel {
+    public func item(for indexPath: IndexPath) -> NodeModel {
         sections[indexPath.section].items[indexPath.item]
     }
     
@@ -26,13 +28,14 @@ public struct DiffableDataSourceSnapshot<T: CollectionNodeModel> {
     }
 }
 
-public class DiffableDataSource<Model: CollectionNodeModel & Equatable>: NSObject,
+public class DiffableDataSource<Target: SectionInflator>: NSObject,
     ASCollectionDelegate & ASCollectionDataSource {
-    public typealias Snapshot = DiffableDataSourceSnapshot<Model>
+    public typealias Snapshot = DiffableDataSourceSnapshot<Target>
     
     public private(set) var snapshot: Snapshot!
     
     public private(set) weak var collectionNode: ASCollectionNode!
+    fileprivate let rx_channel = NodeChannel()
     
     public init(collectionNode: ASCollectionNode) {
         self.collectionNode = collectionNode
@@ -47,9 +50,10 @@ public class DiffableDataSource<Model: CollectionNodeModel & Equatable>: NSObjec
             return
         }
         self.snapshot = snapshot
-        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections).forBatchUpdates()
-        // TODO: combine diff result with requested index paths updates
+        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
+        
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
+
             for move in result.moves {
                 node?.moveSection(move.from, toSection: move.to)
             }
@@ -75,16 +79,31 @@ public class DiffableDataSource<Model: CollectionNodeModel & Equatable>: NSObjec
     
     public func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let item = snapshot.item(for: indexPath)
-        return item.viewBlock
+        return item.nodeBlock(with: rx_channel, indexPath: indexPath)
     }
     
     public func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
-        let section = snapshot.sections[indexPath.section]
         let item = snapshot.item(for: indexPath)
-        let context = CollectionNodeContext(
-            section: section,
+        let context = NodeContext(
             containerSize: collectionNode.calculatedSize,
             contentInset: collectionNode.contentInset)
         return item.sizeRange(in: context)
+    }
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
+        let item = snapshot.item(for: indexPath)
+        let event = NodeEvent(model: item, kind: .selection, indexPath: indexPath, userInfo: [:])
+        rx_channel.onNext(event)
+    }
+}
+
+extension Reactive {
+    
+    public func nodeEventChannel<Model: SectionInflator, T: NodeModel>() -> Observable<GenericNodeEvent<T>>
+        where Base: DiffableDataSource<Model> {
+        base.rx_channel
+            .asObserver()
+            .compactMap(GenericNodeEvent<T>.init)
+            .observeOn(MainScheduler.instance)
     }
 }

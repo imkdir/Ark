@@ -10,28 +10,27 @@ import Foundation
 import Ark
 import AsyncDisplayKit
 
-enum HomeFeed {
+enum HomeFeed: SectionInflator {
     case banner(Banner)
     case articleFeed(ArticleFeed)
-}
 
-extension HomeFeed: CollectionNodeModel {
-    private var content: CollectionNodeModel {
+    var diffIdentifier: AnyHashable {
         switch self {
         case .banner(let banner):
-            return banner
-        case .articleFeed(let articleFeed):
-            return articleFeed
+            return banner.diffIdentifier
+        case .articleFeed(let feed):
+            return feed.date
         }
     }
     
-    var diffIdentifier: AnyHashable {
-        content.diffIdentifier
-    }
-    
-    var items: [CollectionNodeModel] {
-        content.items
+    var items: [NodeModel] {
+        switch self {
+        case .banner(let banner):
+            return [banner]
+        case .articleFeed(let feed):
+            var result: [NodeModel] = feed.subjects
+            result.insert(SectionHeader(date: feed.date), at: 0)
+            return result
+        }
     }
 }
-
-extension HomeFeed: Equatable {}

@@ -8,19 +8,26 @@
 
 import UIKit
 import Ark
+import RxSwift
+import RxCocoa
 import AsyncDisplayKit
 
 
-struct SectionHeader: CollectionNodeModel {
+final class SectionHeader: NodeModel {
     let date: Date
     
-    var diffIdentifier: AnyHashable { date }
+    init(date: Date) {
+        self.date = date
+        super.init()
+    }
     
-    var viewBlock: ASCellNodeBlock {
+    override var diffIdentifier: AnyHashable { date }
+    
+    override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         return { Node(title: string(format: "MMM dd", self.date)) }
     }
     
-    func sizeRange(in context: CollectionNodeContext) -> ASSizeRange {
+    override func sizeRange(in context: NodeContext) -> ASSizeRange {
         context.sizeRange(height: 35)
     }
     
@@ -46,5 +53,3 @@ struct SectionHeader: CollectionNodeModel {
         }
     }
 }
-
-extension SectionHeader: Equatable {}

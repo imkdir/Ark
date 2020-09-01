@@ -1,5 +1,5 @@
 //
-//  CollectionNodeContext.swift
+//  NodeContext.swift
 //  Ark
 //
 //  Created by Dwight CHENG on 8/27/20.
@@ -9,8 +9,8 @@
 import UIKit
 import AsyncDisplayKit
 
-public struct CollectionNodeContext {
-    public let section: CollectionNodeModel
+
+public struct NodeContext {
     public let containerSize: CGSize
     public let contentInset: UIEdgeInsets
     

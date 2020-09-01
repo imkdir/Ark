@@ -8,20 +8,35 @@
 
 import UIKit
 import Ark
+import RxSwift
+import RxCocoa
 import AsyncDisplayKit
 
-struct Banner: CollectionNodeModel {
+final class Banner: NodeModel {
+
     let id: UUID
     let image: UIImage
     
-    var diffIdentifier: AnyHashable { id.uuidString }
-    
-    var viewBlock: ASCellNodeBlock {
-        return { Node(image: self.image) }
+    init(image: UIImage) {
+        self.id = UUID()
+        self.image = image
+        super.init()
     }
     
-    func onSelected() {
-        
+    override var diffIdentifier: AnyHashable {
+        id.uuidString
+    }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? Banner else {
+            return false
+        }
+        return id == object.id
+            && image == object.image
+    }
+    
+    override func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        return { Node(image: self.image) }
     }
     
     final class Node: ASCellNode {
@@ -45,5 +60,3 @@ struct Banner: CollectionNodeModel {
         }
     }
 }
-
-extension Banner: Equatable {}

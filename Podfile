@@ -6,6 +6,8 @@ target 'Ark' do
   use_frameworks!
 
   pod 'Texture', '~> 3.0'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
 end
 
