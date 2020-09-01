@@ -16,7 +16,7 @@ internal protocol _AnyNodableBox {
     /// Determine whether values in the boxes are equivalent
     ///
     /// - Precondition: `self` and `box` are in canonical form.
-    /// - Returns: `nil` to indicate thatt he boxes store different types, so
+    /// - Returns: `nil` to indicate that the boxes store different types, so
     ///   no comparison is possible. Otherwise, contains the result of `==`.
     func _isEqual(to box: _AnyNodableBox) -> Bool?
     var _diffIdentifier: AnyHashable { get }

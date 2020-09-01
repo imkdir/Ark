@@ -13,14 +13,14 @@ import AsyncDisplayKit
 
 
 /// A SectionInfaltor provides items for a section
-/// and act as section level element for diff processing.
+/// and act as section-level element for diff processing.
 public protocol SectionInflator: Diffable, Equatable {
     var items: [AnyNodable] { get }
 }
 
 /// A struct implements `Nodable` provides
 /// info to construct a texture node and
-/// act as section or item level element for diff processing.
+/// act as item-level element for diff processing.
 public protocol Nodable: Diffable, Equatable {
 
     var diffIdentifier: AnyHashable { get }
