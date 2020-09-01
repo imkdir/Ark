@@ -14,14 +14,15 @@ import AsyncDisplayKit
 
 struct Banner: Nodable {
 
-    let image: UIImage
+    let imageName: String
     
     var diffIdentifier: AnyHashable {
-        image.hashValue
+        imageName
     }
     
-    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-        return { Node(image: self.image) }
+    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        let image = UIImage(named: imageName)!
+        return { Node(image: image) }
     }
     
     final class Node: ASCellNode {

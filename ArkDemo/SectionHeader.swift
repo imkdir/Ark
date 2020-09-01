@@ -18,7 +18,7 @@ struct SectionHeader: Nodable {
     
     var diffIdentifier: AnyHashable { date }
     
-    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         return { Node(title: string(format: "MMM dd", self.date)) }
     }
     

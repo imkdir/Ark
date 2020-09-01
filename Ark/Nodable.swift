@@ -11,6 +11,9 @@ import RxSwift
 import RxCocoa
 import AsyncDisplayKit
 
+
+/// A SectionInfaltor provides items for a section
+/// and act as section level element for diff processing.
 public protocol SectionInflator: Nodable {
     var items: [AnyNodable] { get }
 }
@@ -19,7 +22,7 @@ public protocol Nodable: Diffable, Equatable {
 
     var diffIdentifier: AnyHashable { get }
     
-    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock
+    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock
     
     func sizeRange(in context: NodeContext) -> ASSizeRange
 }
@@ -28,8 +31,10 @@ public extension Nodable {
     func sizeRange(in context: NodeContext) -> ASSizeRange {
         context.automaticDimension
     }
-    
-    func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-        ASCellNode.init
+}
+
+public extension SectionInflator {
+    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        fatalError("This methods should never be called on SectionInflator.")
     }
 }

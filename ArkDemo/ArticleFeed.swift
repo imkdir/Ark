@@ -30,7 +30,7 @@ struct ArticleFeed {
             }
         }
         
-        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             switch self {
             case .article(let article):
                 return article.nodeBlock(with: channel, indexPath: indexPath)
@@ -48,7 +48,7 @@ struct ArticleFeed {
         
         var diffIdentifier: AnyHashable { title }
         
-        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(article: self) }
         }
         
@@ -103,7 +103,7 @@ struct ArticleFeed {
         
         var diffIdentifier: AnyHashable { title }
         
-        func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+        func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
             return { Node(poll: self) }
         }
         

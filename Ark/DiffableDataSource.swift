@@ -28,6 +28,8 @@ public struct DiffableDataSourceSnapshot<T: SectionInflator> {
     }
 }
 
+public typealias NodeEventChannel = PublishSubject<NodeEvent>
+
 public class DiffableDataSource<Target: SectionInflator>: NSObject,
     ASCollectionDelegate & ASCollectionDataSource {
     public typealias Snapshot = DiffableDataSourceSnapshot<Target>
@@ -35,7 +37,7 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
     public private(set) var snapshot: Snapshot!
     
     public private(set) weak var collectionNode: ASCollectionNode!
-    fileprivate let rx_channel = NodeChannel()
+    fileprivate let rx_channel = NodeEventChannel()
     
     public init(collectionNode: ASCollectionNode) {
         self.collectionNode = collectionNode

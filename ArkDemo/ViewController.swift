@@ -52,7 +52,7 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
         if case .banner? = self.sections.first {
             return
         }
-        let banner = Banner(image: UIImage(named: "banner")!)
+        let banner = Banner(imageName: "banner")
         self.sections.insert(.banner(banner), at: 0)
     }
     

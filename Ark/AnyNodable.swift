@@ -20,7 +20,7 @@ internal protocol _AnyNodableBox {
     ///   no comparison is possible. Otherwise, contains the result of `==`.
     func _isEqual(to box: _AnyNodableBox) -> Bool?
     var _diffIdentifier: AnyHashable { get }
-    func _nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock
+    func _nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock
     func _sizeRange(in context: NodeContext) -> ASSizeRange
     
     var _base: Any { get }
@@ -55,7 +55,7 @@ internal struct _ConcretNodableBox<Base: Nodable>: _AnyNodableBox {
         _baseNodable.diffIdentifier
     }
     
-    internal func _nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+    internal func _nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         _baseNodable.nodeBlock(with: channel, indexPath: indexPath)
     }
     
@@ -116,11 +116,31 @@ extension AnyNodable: Nodable {
         _box._canonicalBox._diffIdentifier
     }
     
-    public func nodeBlock(with channel: NodeChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+    public func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
         _box._canonicalBox._nodeBlock(with: channel, indexPath: indexPath)
     }
     
     public func sizeRange(in context: NodeContext) -> ASSizeRange {
         _box._canonicalBox._sizeRange(in: context)
+    }
+}
+
+extension AnyNodable: CustomStringConvertible {
+    public var description: String {
+        String(describing: base)
+    }
+}
+
+extension AnyNodable: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "AnyNodable(" + String(reflecting: base) + ")"
+    }
+}
+
+extension AnyNodable: CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(
+            self,
+            children: ["value": base])
     }
 }

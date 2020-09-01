@@ -28,7 +28,7 @@
 		B42875CB24EE7A7700933413 /* Ark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B4256DC224ED1715000DF13C /* Ark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B44FACDA24FE2B4D0027D5A5 /* AnyNodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */; };
 		B4E5581B24FCA9DA004C2477 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */; };
-		B4E5581E24FCC530004C2477 /* NodeChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5581D24FCC530004C2477 /* NodeChannel.swift */; };
+		B4E5581E24FCC530004C2477 /* NodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5581D24FCC530004C2477 /* NodeEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,7 +92,7 @@
 		B42875C024EE138100933413 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B42875C524EE2CBB00933413 /* DiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableDataSource.swift; sourceTree = "<group>"; };
 		B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyNodable.swift; sourceTree = "<group>"; };
-		B4E5581D24FCC530004C2477 /* NodeChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeChannel.swift; sourceTree = "<group>"; };
+		B4E5581D24FCC530004C2477 /* NodeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeEvent.swift; sourceTree = "<group>"; };
 		F0C766C3C5A77FD675545DA9 /* Pods_ArkDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArkDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F61531B872BE69FE4C5901BD /* Pods-Ark.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ark.release.xcconfig"; path = "Target Support Files/Pods-Ark/Pods-Ark.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,7 +162,7 @@
 				A64FD07724F681CF00EB0D38 /* Nodable.swift */,
 				B44FACD924FE2B4D0027D5A5 /* AnyNodable.swift */,
 				A6E81FA524F7E99E00AAE8B0 /* NodeContext.swift */,
-				B4E5581D24FCC530004C2477 /* NodeChannel.swift */,
+				B4E5581D24FCC530004C2477 /* NodeEvent.swift */,
 				B4256DC624ED1715000DF13C /* Info.plist */,
 			);
 			path = Ark;
@@ -397,7 +397,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4E5581E24FCC530004C2477 /* NodeChannel.swift in Sources */,
+				B4E5581E24FCC530004C2477 /* NodeEvent.swift in Sources */,
 				B42875AB24EE10ED00933413 /* ListDiff.swift in Sources */,
 				A6E81FA624F7E99E00AAE8B0 /* NodeContext.swift in Sources */,
 				B42875C624EE2CBB00933413 /* DiffableDataSource.swift in Sources */,

@@ -10,8 +10,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-public typealias NodeChannel = PublishSubject<NodeEvent>
-
 public struct NodeEvent {
     public let model: AnyNodable
     public let kind: Kind
