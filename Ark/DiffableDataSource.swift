@@ -41,8 +41,7 @@ public typealias NodeEventChannel = PublishSubject<NodeEvent>
 ///
 /// It also manage events from all nodes, whoever interests in the events can subscribe
 /// to `rx.nodeEventChannel` and pass in a callback `(GenericNodeEvent<T:Nodable>) -> Void`,
-/// substitude `T` for any type that implements `Nodable`, and subscriber will receive any
-/// events comming from that source.
+/// and subscriber will receive future events comming from that source.
 public class DiffableDataSource<Target: SectionInflator>: NSObject,
     ASCollectionDelegate & ASCollectionDataSource {
     public typealias Snapshot = DiffableDataSourceSnapshot<Target>
@@ -69,36 +68,33 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
             return
         }
         self.snapshot = snapshot
-        let result = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
         
-        func createBatchUpdates(from updates: IndexSet) -> BatchUpdates {
-            var result = BatchUpdates()
-            for section in updates {
-                let oldItems = oldSnapshot.sections[section].items
-                let newItems = snapshot.sections[section].items
-                let diffResult = List.diffing(oldArray: oldItems, newArray: newItems).forBatchUpdates()
-                result.itemDeletes += diffResult.deletes.toIndexPaths(section: section)
-                result.itemInserts += diffResult.inserts.toIndexPaths(section: section)
-                result.itemMoves += diffResult.moves.toIndexPaths(section: section)
-            }
-            return result
+        let diffResult = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
+        
+        let batchUpdates = diffResult.updates.reduce(into: BatchUpdates()) { result, section in
+            let diffResult = List.diffing(
+                oldArray: oldSnapshot.sections[section].items,
+                newArray: snapshot.sections[section].items).forBatchUpdates()
+            print(diffResult)
+            result.itemDeletes += diffResult.deletes.toIndexPaths(section: section)
+            result.itemInserts += diffResult.inserts.toIndexPaths(section: section)
+            result.itemMoves += diffResult.moves.toIndexPaths(section: section)
         }
-        let batchUpdates = createBatchUpdates(from: result.updates)
         
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
-            
-            node?.deleteItems(at: batchUpdates.itemDeletes)
-            node?.insertItems(at: batchUpdates.itemInserts)
             
             for move in batchUpdates.itemMoves {
                 node?.moveItem(at: move.from, to: move.to)
             }
+            
+            node?.deleteItems(at: batchUpdates.itemDeletes)
+            node?.insertItems(at: batchUpdates.itemInserts)
 
-            for move in result.moves {
+            for move in diffResult.moves {
                 node?.moveSection(move.from, toSection: move.to)
             }
-            node?.deleteSections(result.deletes)
-            node?.insertSections(result.inserts)
+            node?.deleteSections(diffResult.deletes)
+            node?.insertSections(diffResult.inserts)
         })
     }
     
@@ -132,7 +128,7 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
     
     public func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
         let item = snapshot.item(for: indexPath)
-        let event = NodeEvent(model: item, kind: .selection, indexPath: indexPath, userInfo: [:])
+        let event = NodeEvent(model: item, action: .selection, indexPath: indexPath, userInfo: [:])
         rx_channel.onNext(event)
     }
 }

@@ -96,7 +96,7 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
             subjects[index] = .article(article)
             let newFeed = HomeFeed.articleFeed(.init(date: feed.date, subjects: subjects))
             sections[event.indexPath.section] = newFeed
-        case .poll(let poll):
+        case .poll(_):
             break
         }
     }

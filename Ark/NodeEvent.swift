@@ -10,21 +10,20 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-// FIXME: rename Kind to Action, and case action to cta
 public struct NodeEvent {
     public let model: AnyNodable
-    public let kind: Kind
+    public let action: Action
     public let indexPath: IndexPath
     public let userInfo: [String: Any]
     
-    public enum Kind {
-        case selection, refresh, action, dismiss
+    public enum Action {
+        case selection, refresh, click, dismiss
     }
 }
 
 public struct GenericNodeEvent<T: Nodable> {
     public let model: T
-    public let kind: NodeEvent.Kind
+    public let action: NodeEvent.Action
     public let indexPath: IndexPath
     public let userInfo: [String: Any]
     
@@ -33,7 +32,7 @@ public struct GenericNodeEvent<T: Nodable> {
             return nil
         }
         self.model = model
-        self.kind = nodeEvent.kind
+        self.action = nodeEvent.action
         self.indexPath = nodeEvent.indexPath
         self.userInfo = nodeEvent.userInfo
     }

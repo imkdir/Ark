@@ -20,5 +20,7 @@ Pod::Spec.new do |spec|
   # spec.exclude_files = "Classes/Exclude"
 
   spec.dependency "Texture", "~> 3.0"
+  spec.dependency "RxSwift"
+  spec.dependency "RxCocoa"
 
 end

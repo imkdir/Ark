@@ -12,7 +12,7 @@ import RxCocoa
 import AsyncDisplayKit
 
 
-/// A SectionInfaltor provides items for a section
+/// A SectionInflator provides items for a section
 /// and act as section-level element for diff processing.
 public protocol SectionInflator: Diffable, Equatable {
     var items: [AnyNodable] { get }
