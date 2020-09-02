@@ -1,5 +1,5 @@
 //
-//  ArticleFeed.swift
+//  SubjectFeed.swift
 //  ArkDemo
 //
 //  Created by Dwight CHENG on 8/27/20.
@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import AsyncDisplayKit
 
-struct ArticleFeed {
+struct SubjectFeed {
 
     let date: Date
     let subjects: [Subject]
@@ -187,8 +187,8 @@ struct ArticleFeed {
     }
 }
 
-extension ArticleFeed: Equatable {
-    static func == (lhs: ArticleFeed, rhs: ArticleFeed) -> Bool {
+extension SubjectFeed: Equatable {
+    static func == (lhs: SubjectFeed, rhs: SubjectFeed) -> Bool {
         lhs.date == rhs.date &&
         lhs.subjects == rhs.subjects
     }

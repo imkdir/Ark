@@ -12,7 +12,7 @@
 		A64FD07824F681D000EB0D38 /* Nodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64FD07724F681CF00EB0D38 /* Nodable.swift */; };
 		A64FD07A24F688D000EB0D38 /* HomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64FD07924F688D000EB0D38 /* HomeFeed.swift */; };
 		A655BE0F24F73CC400DB6F02 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE0E24F73CC400DB6F02 /* Banner.swift */; };
-		A655BE1124F73D2800DB6F02 /* ArticleFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */; };
+		A655BE1124F73D2800DB6F02 /* SubjectFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1024F73D2800DB6F02 /* SubjectFeed.swift */; };
 		A655BE1324F73D5C00DB6F02 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */; };
 		A6E81FA624F7E99E00AAE8B0 /* NodeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E81FA524F7E99E00AAE8B0 /* NodeContext.swift */; };
 		B4256DC724ED1715000DF13C /* Ark.h in Headers */ = {isa = PBXBuildFile; fileRef = B4256DC524ED1715000DF13C /* Ark.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -75,7 +75,7 @@
 		A64FD07724F681CF00EB0D38 /* Nodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nodable.swift; sourceTree = "<group>"; };
 		A64FD07924F688D000EB0D38 /* HomeFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeed.swift; sourceTree = "<group>"; };
 		A655BE0E24F73CC400DB6F02 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
-		A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFeed.swift; sourceTree = "<group>"; };
+		A655BE1024F73D2800DB6F02 /* SubjectFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectFeed.swift; sourceTree = "<group>"; };
 		A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		A6E81FA524F7E99E00AAE8B0 /* NodeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeContext.swift; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 				B42875B624EE137D00933413 /* ViewController.swift */,
 				A64FD07924F688D000EB0D38 /* HomeFeed.swift */,
 				A655BE0E24F73CC400DB6F02 /* Banner.swift */,
-				A655BE1024F73D2800DB6F02 /* ArticleFeed.swift */,
+				A655BE1024F73D2800DB6F02 /* SubjectFeed.swift */,
 				A655BE1224F73D5C00DB6F02 /* SectionHeader.swift */,
 				A6E81FA224F7A8C600AAE8B0 /* DateFormat.swift */,
 				B42875B824EE137D00933413 /* Main.storyboard */,
@@ -417,7 +417,7 @@
 				A655BE0F24F73CC400DB6F02 /* Banner.swift in Sources */,
 				B42875B724EE137D00933413 /* ViewController.swift in Sources */,
 				B4E5581B24FCA9DA004C2477 /* DateFormat.swift in Sources */,
-				A655BE1124F73D2800DB6F02 /* ArticleFeed.swift in Sources */,
+				A655BE1124F73D2800DB6F02 /* SubjectFeed.swift in Sources */,
 				A655BE1324F73D5C00DB6F02 /* SectionHeader.swift in Sources */,
 				B42875B324EE137D00933413 /* AppDelegate.swift in Sources */,
 				A64FD07A24F688D000EB0D38 /* HomeFeed.swift in Sources */,
@@ -648,7 +648,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.glowing.GLFeedKitDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glowing.ArkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -668,7 +668,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.glowing.GLFeedKitDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glowing.ArkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

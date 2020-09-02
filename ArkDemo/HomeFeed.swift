@@ -13,13 +13,13 @@ import AsyncDisplayKit
 enum HomeFeed: SectionInflator {
     
     case banner(Banner)
-    case articleFeed(ArticleFeed)
+    case subjects(SubjectFeed)
 
     var diffIdentifier: AnyHashable {
         switch self {
         case .banner(let banner):
             return banner.diffIdentifier
-        case .articleFeed(let feed):
+        case .subjects(let feed):
             return feed.date
         }
     }
@@ -28,10 +28,10 @@ enum HomeFeed: SectionInflator {
         switch self {
         case .banner(let banner):
             return [AnyNodable(banner)]
-        case .articleFeed(let feed):
-            var result: [AnyNodable] = feed.subjects.map(AnyNodable.init)
-            result.insert(AnyNodable(SectionHeader(date: feed.date)), at: 0)
-            return result
+        case .subjects(let feed):
+            var items: [AnyNodable] = feed.subjects.map(AnyNodable.init)
+            items.insert(AnyNodable(SectionHeader(date: feed.date)), at: 0)
+            return items
         }
     }
 }

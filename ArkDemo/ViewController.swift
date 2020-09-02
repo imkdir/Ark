@@ -58,7 +58,7 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     
     private func fetchFeeds() {
         sections = [
-            .articleFeed(.init(date: Date(), subjects: [
+            .subjects(.init(date: Date(), subjects: [
                 .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
                 .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
                 .poll(.init(title: "Who is the best programmer in the world?", options: ["Rob Pike": 2, "Dennis Ritchie": 3, "Kent Beck": 4], isVoted: false))
@@ -73,32 +73,27 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     private func observeEvents() {
         dataSource
             .rx.nodeEventChannel()
-//            .debug("ArticleFeed")
-            .subscribe(onNext: handleArticleEvent)
+            .debug("Subject")
+            .subscribe(onNext: handleSubjectEvent)
             .disposed(by: disposeBag)
         
         dataSource
             .rx.nodeEventChannel()
-//            .debug("Banner")
+            .debug("Banner")
             .subscribe(onNext: handleBannerEvent)
             .disposed(by: disposeBag)
     }
     
-    private func handleArticleEvent(_ event: GenericNodeEvent<ArticleFeed.Subject>) {
-        guard case .articleFeed(let feed) = sections[event.indexPath.section],
+    private func handleSubjectEvent(_ event: GenericNodeEvent<SubjectFeed.Subject>) {
+        guard case .subjects(let feed) = sections[event.indexPath.section],
             let index = feed.subjects.firstIndex(of: event.model) else {
             return
         }
-        switch event.model {
-        case .article(var article):
-            var subjects = feed.subjects
-            article.read.toggle()
-            subjects[index] = .article(article)
-            let newFeed = HomeFeed.articleFeed(.init(date: feed.date, subjects: subjects))
-            sections[event.indexPath.section] = newFeed
-        case .poll(_):
-            break
-        }
+        var subjects = feed.subjects
+        subjects.remove(at: index)
+        subjects.append(event.model)
+        let newFeed = HomeFeed.subjects(.init(date: feed.date, subjects: subjects))
+        sections[event.indexPath.section] = newFeed
     }
     
     private func handleBannerEvent(_ event: GenericNodeEvent<Banner>) {
