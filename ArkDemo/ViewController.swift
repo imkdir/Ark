@@ -89,20 +89,30 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
             let index = feed.subjects.firstIndex(of: event.model) else {
             return
         }
-        var subjects = feed.subjects
-        subjects.remove(at: index)
-        subjects.append(event.model)
-        let newFeed = HomeFeed.subjects(.init(date: feed.date, subjects: subjects))
-        sections[event.indexPath.section] = newFeed
+        switch event.action {
+        case .didSelect:
+            var subjects = feed.subjects
+            subjects.remove(at: index)
+            subjects.append(event.model)
+            let newFeed = HomeFeed.subjects(.init(date: feed.date, subjects: subjects))
+            sections[event.indexPath.section] = newFeed
+        default:
+            break
+        }
     }
     
     private func handleBannerEvent(_ event: GenericNodeEvent<Banner>) {
-        sections.removeAll(where: { section in
-            guard case .banner(let banner) = section else {
-                return false
-            }
-            return banner == event.model
-        })
+        switch event.action {
+        case .didSelect:
+            sections.removeAll(where: { section in
+                guard case .banner(let banner) = section else {
+                    return false
+                }
+                return banner == event.model
+            })
+        default:
+            break
+        }
     }
     
     private let disposeBag = DisposeBag()
