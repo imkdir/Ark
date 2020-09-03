@@ -44,3 +44,26 @@ public struct GenericNodeEvent<T: Nodable> {
         self.indexPath = nodeEvent.indexPath
     }
 }
+
+extension NodeEvent.Action: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .didSelect:
+            return "did select"
+        case .didDeselect:
+            return "did deselect"
+        case .didHighlight:
+            return "did hightlight"
+        case .didUnhighlight:
+            return "did unhighlight"
+        case .willDisplay:
+            return "will display"
+        case .endDisplay:
+            return "end display"
+        case .ok(let info):
+            return "ok: \(info)"
+        case .cancel:
+            return "cancel"
+        }
+    }
+}

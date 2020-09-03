@@ -19,7 +19,7 @@ struct SectionHeader: Nodable {
     var diffIdentifier: AnyHashable { date }
     
     func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-        return { Node(title: string(format: "MMM dd", self.date)) }
+        return { [description] in Node(title: description) }
     }
     
     func sizeRange(in context: NodeContext) -> ASSizeRange {
@@ -46,5 +46,11 @@ struct SectionHeader: Nodable {
                 insets: .init(top: 4, left: 15, bottom: 4, right: 15),
                 child: titleNode)
         }
+    }
+}
+
+extension SectionHeader: CustomStringConvertible {
+    var description: String {
+        string(format: "MMM dd", self.date)
     }
 }

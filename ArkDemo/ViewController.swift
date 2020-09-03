@@ -57,11 +57,29 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     }
     
     private func fetchFeeds() {
+        let dateMinusDayCount = {
+            Date().addingTimeInterval(-86400 * $0)
+        }
         sections = [
-            .subjects(.init(date: Date(), subjects: [
+            .subjects(.init(date: dateMinusDayCount(0), subjects: [
                 .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
                 .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
                 .poll(.init(title: "Who is the best programmer in the world?", options: ["Rob Pike": 2, "Dennis Ritchie": 3, "Kent Beck": 4], isVoted: false))
+            ])),
+            .subjects(.init(date: dateMinusDayCount(1), subjects: [
+                .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
+                .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
+                .poll(.init(title: "Which Game you played most on Nintendo Switch?", options: ["Clubhouse Games": 32, "Super Smash Bros": 28, "Fitness Boxing": 30], isVoted: false))
+            ])),
+            .subjects(.init(date: dateMinusDayCount(2), subjects: [
+                .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
+                .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
+                .poll(.init(title: "Who is your favorite Beatle?", options: ["Paul McCartney": 12, "John Lennon": 8, "George Harrison": 11, "Ringo Starr": 22], isVoted: false))
+            ])),
+            .subjects(.init(date: dateMinusDayCount(3), subjects: [
+                .article(.init(title: "Lorem ipsum dolor sit amet.", preview: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...", read: false)),
+                .article(.init(title: "Morbi neque ex, rhoncus nec.", preview: "In vel mauris ullamcorper. Donec interdum magna felis, sed ultrices magna interdum eu.", read: false)),
+                .poll(.init(title: "Which is the Best Show on Nextflix?", options: ["The Office": 7, "Avatar: The Last Airbender": 15, "Line of Duty": 8], isVoted: false))
             ]))
         ]
     }
@@ -73,14 +91,19 @@ final class ViewController: ASDKViewController<ASCollectionNode> {
     private func observeEvents() {
         dataSource
             .rx.nodeEventChannel()
-            .debug("Subject")
             .subscribe(onNext: handleSubjectEvent)
             .disposed(by: disposeBag)
         
         dataSource
             .rx.nodeEventChannel()
-            .debug("Banner")
             .subscribe(onNext: handleBannerEvent)
+            .disposed(by: disposeBag)
+        
+        dataSource
+            .rx.nodeEventChannel()
+            .subscribe(onNext: { (event: GenericNodeEvent<SectionHeader>) in
+                print("\(event.action) \(event.model)")
+            })
             .disposed(by: disposeBag)
     }
     

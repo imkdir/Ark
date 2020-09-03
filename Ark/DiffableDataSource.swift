@@ -137,7 +137,6 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
         rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didHighlight))
     }
     
-    
     public func collectionNode(_ collectionNode: ASCollectionNode, didUnhighlightItemAt indexPath: IndexPath) {
         rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didUnhighlight))
     }
