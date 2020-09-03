@@ -72,13 +72,13 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
         let diffResult = List.diffing(oldArray: oldSnapshot.sections, newArray: snapshot.sections)
         
         let batchUpdates = diffResult.updates.reduce(into: BatchUpdates()) { result, section in
-            let diffResult = List.diffing(
+            let sectionDiff = List.diffing(
                 oldArray: oldSnapshot.sections[section].items,
                 newArray: snapshot.sections[section].items).forBatchUpdates()
-            print(diffResult)
-            result.itemDeletes += diffResult.deletes.toIndexPaths(section: section)
-            result.itemInserts += diffResult.inserts.toIndexPaths(section: section)
-            result.itemMoves += diffResult.moves.toIndexPaths(section: section)
+
+            result.itemDeletes += sectionDiff.deletes.toIndexPaths(section: section)
+            result.itemInserts += sectionDiff.inserts.toIndexPaths(section: section)
+            result.itemMoves += sectionDiff.moves.toIndexPaths(section: section)
         }
         
         collectionNode.performBatch(animated: animatingDifferences, updates: { [node = self.collectionNode] in
@@ -86,7 +86,6 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
             for move in batchUpdates.itemMoves {
                 node?.moveItem(at: move.from, to: move.to)
             }
-            
             node?.deleteItems(at: batchUpdates.itemDeletes)
             node?.insertItems(at: batchUpdates.itemInserts)
 
@@ -127,9 +126,30 @@ public class DiffableDataSource<Target: SectionInflator>: NSObject,
     }
     
     public func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
-        let item = snapshot.item(for: indexPath)
-        let event = NodeEvent(model: item, action: .selection, indexPath: indexPath, userInfo: [:])
-        rx_channel.onNext(event)
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didSelect))
+    }
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, didDeselectItemAt indexPath: IndexPath) {
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didDeselect))
+    }
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, didHighlightItemAt indexPath: IndexPath) {
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didHighlight))
+    }
+    
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, didUnhighlightItemAt indexPath: IndexPath) {
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .didUnhighlight))
+    }
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, willDisplayItemWith node: ASCellNode) {
+        guard let indexPath = node.indexPath else { return }
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .willDisplay))
+    }
+    
+    public func collectionNode(_ collectionNode: ASCollectionNode, didEndDisplayingItemWith node: ASCellNode) {
+        guard let indexPath = node.indexPath else { return }
+        rx_channel.onNext(.init(snapshot: snapshot, indexPath: indexPath, action: .endDisplay))
     }
 }
 
@@ -143,5 +163,12 @@ extension Reactive {
             .asObserver()
             .compactMap(GenericNodeEvent<T>.init)
             .observeOn(MainScheduler.instance)
+    }
+}
+
+extension NodeEvent {
+    fileprivate init<Model: SectionInflator>(snapshot: DiffableDataSource<Model>.Snapshot, indexPath: IndexPath, action: NodeEvent.Action) {
+        let item = snapshot.item(for: indexPath)
+        self.init(model: item, action: action, indexPath: indexPath)
     }
 }

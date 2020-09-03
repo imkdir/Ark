@@ -14,10 +14,19 @@ public struct NodeEvent {
     public let model: AnyNodable
     public let action: Action
     public let indexPath: IndexPath
-    public let userInfo: [String: Any]
     
     public enum Action {
-        case selection, refresh, click, dismiss
+        // Collection Node Delegate Events
+        case didSelect
+        case didDeselect
+        case didHighlight
+        case didUnhighlight
+        case willDisplay
+        case endDisplay
+        
+        // Custom Node General Events
+        case ok(info: [String:Any])
+        case cancel
     }
 }
 
@@ -25,7 +34,6 @@ public struct GenericNodeEvent<T: Nodable> {
     public let model: T
     public let action: NodeEvent.Action
     public let indexPath: IndexPath
-    public let userInfo: [String: Any]
     
     public init?(_ nodeEvent: NodeEvent) {
         guard let model = nodeEvent.model.base as? T else {
@@ -34,6 +42,5 @@ public struct GenericNodeEvent<T: Nodable> {
         self.model = model
         self.action = nodeEvent.action
         self.indexPath = nodeEvent.indexPath
-        self.userInfo = nodeEvent.userInfo
     }
 }
