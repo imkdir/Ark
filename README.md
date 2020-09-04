@@ -30,11 +30,11 @@
 	import AsyncDisplayKit
 	
 	class ViewController: ASDKViewController<ASCollectionNode> {
-		required init?(coder: NSCoder) { // storyboard
-			// create layout instance
-			let node = ASCollectionNode(collectionViewLayout: layout)
-			super.init(node)
-		}
+	    required init?(coder: NSCoder) { // storyboard
+	        // create layout instance
+	        let node = ASCollectionNode(collectionViewLayout: layout)
+	        super.init(node)
+	    }
 	}
 	```
 	
@@ -44,9 +44,9 @@
 	import Ark
 	
 	class ViewController: ASDKViewController<ASCollectionNode> {
-		private lazy var dataSource = DiffableDataSource<HomeFeed>(collectionNode: node)
+	    private lazy var dataSource = DiffableDataSource<HomeFeed>(collectionNode: node)
 		
-		// ...
+	    // ...
 	}
 	```
 	
@@ -56,26 +56,26 @@
 	import Ark
 	
 	enum HomeFeed: SectionInflator {
-		case banner(Banner)[^]
-		case subjects(SubjectFeed)
+	    case banner(Banner)[^]
+	    case subjects(SubjectFeed)
 		
-		var diffIdentifier: AnyHashbale {
-			switch self {
-			case .banner(let banner):
-				return banner.diffIdentifier
-			case .subjects(let feed):
-				return feed.date
-			}
-		}
+	    var diffIdentifier: AnyHashbale {
+	        switch self {
+	        case .banner(let banner):
+	            return banner.diffIdentifier
+	        case .subjects(let feed):
+	            return feed.date
+	        }
+	    }
 		
-		var items: [AnyNodable] {
-			switch self {
-			case .banner(let banner):
-				return [AnyNodable(banner)]
-			case .subjects(let feed):
-				return feed.subjects.map(AnyNodable.init)
-			}
-		}
+	    var items: [AnyNodable] {
+	        switch self {
+	        case .banner(let banner):
+	            return [AnyNodable(banner)]
+	        case .subjects(let feed):
+	            return feed.subjects.map(AnyNodable.init)
+	        }
+	    }
 	}
 	```
 	
@@ -83,37 +83,37 @@
 
 	```swift
 	struct Banner: Nodable {
-		let imageName: String
+	    let imageName: String
 		
-		var diffIdentifier: AnyHashable {
-			imageName
-		}
+	    var diffIdentifier: AnyHashable {
+	        imageName
+	    }
 		
-		func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
-			let image = UIImage(named: imageName)! // main thread operation
-			return { Node(image: image) }
-		}
+	    func nodeBlock(with channel: NodeEventChannel, indexPath: IndexPath) -> ASCellNodeBlock {
+	        let image = UIImage(named: imageName)! // main thread operation
+	        return { Node(image: image) }
+	    }
 		
-		final class Node: ASCellNode {
-			var imageNode: ASImageNode
+	    final class Node: ASCellNode {
+	        var imageNode: ASImageNode
 			
-			init(image: UIImage) {
-				self.imageNode = ASImageNode()
+	        init(image: UIImage) {
+	            self.imageNode = ASImageNode()
 				
-				super.init()
+	            super.init()
 				
-				automaticallyManagesSubnodes = true
-				backgroundColor = .systemBackground
+	            automaticallyManagesSubnodes = true
+	            backgroundColor = .systemBackground
 				
-				imageNode.image = image
-				imageNode.cornerRadius = 4
-				imageNode.contentMode = .scaleAspectFit
-			}
+	            imageNode.image = image
+	            imageNode.cornerRadius = 4
+	            imageNode.contentMode = .scaleAspectFit
+	        }
 			
-			override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-				ASWrapperLayoutSpec(layoutElement: imageNode)
-			}
-		}
+	        override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+	            ASWrapperLayoutSpec(layoutElement: imageNode)
+	        }
+	    }
 	}
 	```
 
@@ -121,22 +121,22 @@
 
 	```swift
 	dataSource
-		.rx.nodeEventChannel()
-		.subscribe(onNext: { [unowned self] (event: GenericNodeEvent<SubjectFeed.Subject>) in
-			let targetSection = event.indexPath.section
-			guard case .subjects(let feed) = self.sections[targetSection],
-				let index = feed.subjects.firstIndex(of: event.model) else {
-				return
-			}
-			if case .selected = event.action {
-				var subjects = feed.subjects
-				subjects.remove(at: index)
-				subjects.append(event.model)
-				let newFeed: HomeFeed = .subjects(.init(date: feed.date, subjects: subjects))
-				self.sections[targetSection] = newFeed
-			}
-		})
-		.disposed(by: disposeBag)
+	    .rx.nodeEventChannel()
+	    .subscribe(onNext: { [unowned self] (event: GenericNodeEvent<SubjectFeed.Subject>) in
+	        let targetSection = event.indexPath.section
+	        guard case .subjects(let feed) = self.sections[targetSection],
+	        let index = feed.subjects.firstIndex(of: event.model) else {
+	            return
+                }
+	        if case .selected = event.action {
+	            var subjects = feed.subjects
+	            subjects.remove(at: index)
+	            subjects.append(event.model)
+	            let newFeed: HomeFeed = .subjects(.init(date: feed.date, subjects: subjects))
+	            self.sections[targetSection] = newFeed
+	        }
+            })
+	    .disposed(by: disposeBag)
 	```
 Note that in `onNext` closure you should specify the `Nodable` type, and it will be called when events related to or from that type's node arrives.
 
@@ -144,13 +144,13 @@ Note that in `onNext` closure you should specify the `Nodable` type, and it will
 
 	```swift
 	private var sections: [HomeFeed] = [] {
-		didSet {
-			updateUI(animated: true)
-		}
+	    didSet {
+	        updateUI(animated: true)
+	    }
 	}
 	
 	private fun updateUI(animated: Bool = false) {
-		dataSource.apply(.init(sections: sections), animatingDifferences: true, completion: nil)
+	    dataSource.apply(.init(sections: sections), animatingDifferences: true, completion: nil)
 	}
 	```
 
