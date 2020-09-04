@@ -56,7 +56,7 @@
 	import Ark
 	
 	enum HomeFeed: SectionInflator {
-	    case banner(Banner)[^]
+	    case banner(Banner)
 	    case subjects(SubjectFeed)
 		
 	    var diffIdentifier: AnyHashbale {
