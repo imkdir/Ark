@@ -127,7 +127,7 @@
 	        guard case .subjects(let feed) = self.sections[targetSection],
 	        let index = feed.subjects.firstIndex(of: event.model) else {
 	            return
-                }
+            }
 	        if case .selected = event.action {
 	            var subjects = feed.subjects
 	            subjects.remove(at: index)
@@ -135,7 +135,7 @@
 	            let newFeed: HomeFeed = .subjects(.init(date: feed.date, subjects: subjects))
 	            self.sections[targetSection] = newFeed
 	        }
-            })
+        })
 	    .disposed(by: disposeBag)
 	```
 Note that in `onNext` closure you should specify the `Nodable` type, and it will be called when events related to or from that type's node arrives.
